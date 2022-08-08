@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            /* background-color: bisque; */
+            background-image: linear-gradient(20deg,#FCFFD9,#c9e7f2, #d3cee9,#f9e3bd,#f1ede9,#f8e4ed);
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        nav {
+            width: 100%;
+            
+            /* background-color: antiquewhite; */
+            display: flex;
+            justify-content: space-around;
+            
+        }
+
+        .btn {
+            width: calc((100%/6) - 20px);
+            height: 80px;
+            background-image: linear-gradient(20deg,#280E3B, #d3cee9,#f8e4ed,#632A7E);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 800;
+            cursor: pointer;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+        .btn:hover{
+            background-color:darkslateblue;
+            color: cornsilk;
+        }
+        .btn:active{
+            background-color:rgb(61, 130, 139);
+            color: rgb(231, 148, 148);
+        }
+
+        main {
+            /* padding: 0 8%; */
+            /* background-color: bisque; */
+          
+            min-height: calc(100vh - 80px);
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .container {
+            width: 80%;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding-top: 75px;
+            gap: 20px;
+            /* background-color: aquamarine; */
+           
+        }
+
+        .container .card {
+            width: calc((100% / 5) - 20px);
+            height: 370px;
+            background-color: darkturquoise;
+            /* background-color:cornflowerblue; */
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        .img2 {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 25px;
+            
+        }
+        .container .fall-card{
+            width: calc((100% / 5) - 20px);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+
+        <div class="btn btn1" onclick="filter('north')">北部</div>
+        <div class="btn btn2" onclick="filter('west')">西部</div>
+        <div class="btn btn3" onclick="filter('east')">東部</div>
+        <div class="btn btn4" onclick="filter('south')">南部</div>
+        <div class="btn btn4" onclick="filter('iland')">離島地區</div>
+        <div class="btn btn4" onclick="filter('all')">全部</div>
+    </nav>
+    <main>
+        <div class="container">
+            <!-- <div class="card">
+                <img  class='img2 'src="" alt="">
+                <h1>縣市</h1>
+                <p>溫度</p>
+                <p>天氣概述</p>
+            </div> -->
+            <!-- <img src="./img/php3M329R.jpg" alt=""> -->
+        </div>
+        <!-- <img src="./img/rain.gif" alt=""> -->
+        <!-- <img src="./img/Sunnycloudy.gif" alt=""> -->
+        <!-- <img src="./img/thunderstorm.gif" alt=""> -->
+    </main>
+
+
+
+    <script>
+        const btn = document.querySelectorAll('btn')
+        const btn1 = document.querySelector('btn1')
+        const btn2 = document.querySelector('btn2')
+        const btn3 = document.querySelector('btn3')
+        const btn4 = document.querySelector('btn4')
+        
+
+
+        let area_number;
+        let img3;
+        function filter(area){
+            let container = document.querySelector('.container')
+            if(area == 'north'){
+                area_number =[1,3,4,5,7,13,18]
+                // container.style.height='100vh'
+            }else if(area == 'west'){
+                area_number =[8,9,11,14,20]
+            }else if(area == 'east'){
+                area_number =[10,12]
+            }else if(area == 'south'){
+                area_number =[0,2,6,15,17]
+            }else if(area == 'iland'){
+                area_number =[16,19,21]
+            }else if(area == 'all'){
+                area_number =[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21]
+            }
+            
+            fetch('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-0A9492A7-B01C-4DD4-BE57-3A33A09203D5')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    // console.log(data);
+                    // console.log(data.records.location[0].locationName);
+                    container.innerHTML =''
+                    let map = data.records.location[0].locationName;
+                    console.log(map);
+                    
+                    for (let i = 0; i <area_number.length ; i++) {
+                        if(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('晴',3)){
+                            img3 ='./img/Sunnycloudy.gif'
+                           
+                        }else if(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('雷')){
+                            img3 ='./img/rain.gif'
+                        }else if(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('晴')&&data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('時')){
+                            img3 ='./img/sun.gif'
+                        }else if(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('多')){
+                            img3 ='./img/cloud.gif'
+                           
+                        }
+                        container.innerHTML += 
+                        `<div class="card">
+                            <img  class='img2 'src="${img3}" alt="">
+                            <h1>${data.records.location[area_number[i]].locationName}</h1>
+                            <p>氣溫:${data.records.location[area_number[i]].weatherElement[2].time[0].parameter.parameterName}~${data.records.location[area_number[i]].weatherElement[4].time[0].parameter.parameterName}°C</p>
+                            <p>天氣:${data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName}</p>
+                            </div>`
+                            // console.log(data.records.location[i].weatherElement[4].time[0].parameter.parameterName);
+                            // console.log(data);
+                            // console.log(data.records.location[i].match('北'))
+                            console.log(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('雲'));
+                    }
+                    for(let i =0; i<3; i++){
+                        container.innerHTML += `<div class="fall-card"></div>`
+                    }
+                })
+        }
+        filter('all');
+            // let container = document.querySelector('.container')
+            // fetch('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-0A9492A7-B01C-4DD4-BE57-3A33A09203D5')
+            //     .then(function (response) {
+            //         return response.json();
+            //     })
+            //     .then(function (data) {
+            //         // console.log(data);
+            //         // console.log(data.records.location[0].locationName);
+                
+            //         let map = data.records.location[0].locationName;
+            //         console.log(map);
+            //         for (let i = 0; i <data.records.location.length ; i++) {
+                        
+            //             container.innerHTML += 
+            //             `<div class="card">
+            //             <img  class='img2 'src="./img/php3M329R.jpg" alt="">
+            //             <h1>${data.records.location[i].locationName}</h1>
+            //             <p>氣溫:${data.records.location[i].weatherElement[2].time[0].parameter.parameterName}~${data.records.location[i].weatherElement[4].time[0].parameter.parameterName}°C</p>
+            //             <p>天氣:${data.records.location[i].weatherElement[0].time[0].parameter.parameterName}</p>
+            //             </div>`
+            //             // console.log(data.records.location[i].weatherElement[4].time[0].parameter.parameterName);
+            //             // console.log(data);
+            //             // console.log(data.records.location[i].match('北'))
+            //         }
+            //     })
+        
+
+
+
+
+
+
+
+            // fetch('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-0A9492A7-B01C-4DD4-BE57-3A33A09203D5')
+            // .then(function (response) {
+            //     return response.json();
+            // })
+            // .then(function (data) {
+            //     // console.log(data);
+            //     // console.log(data.records.location[0].indexOf);
+            // //    btn1.addEventListener('click',function(){
+                
+            // //    })
+                
+            // })
+           
+    </script>
+
+</body>
+
+</html>
