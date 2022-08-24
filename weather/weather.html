@@ -14,6 +14,11 @@
         body {
             /* background-color: bisque; */
             background-image: linear-gradient(20deg,#FCFFD9,#c9e7f2, #d3cee9,#f9e3bd,#f1ede9,#f8e4ed);
+            /* background-image: url('./img/9632.gif_wh860.gif');
+            background-repeat: no-repeat;
+            background-size: cover; */
+            /* background-color: black;
+            opacity: 0.; */
             margin: 0px;
             padding: 0px;
         }
@@ -34,7 +39,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 32px;
+            font-size: 2.5vmin;
             font-weight: 800;
             cursor: pointer;
             border-radius: 20px;
@@ -71,11 +76,42 @@
 
         .container .card {
             width: calc((100% / 5) - 20px);
-            height: 370px;
+            height: 375px;
             background-color: darkturquoise;
             /* background-color:cornflowerblue; */
             text-align: center;
             border-radius: 15px;
+            font-size: 2vmin;
+        }
+
+        .container .fall-card{
+            width: calc((100% / 5) - 20px);
+        }
+        @media (max-width:1280px){
+            .container .card {
+            width: calc((100% / 3) - 20px);
+        }
+        .container .fall-card{
+            width: calc((100% / 3) - 20px);
+        }
+        }
+        @media (max-width:859px){
+            .container .card {
+            width: calc((100% / 2) - 20px);
+            font-size: 2.5vmin;
+        }
+        .container .fall-card{
+            width: calc((100% / 2) - 20px);
+        }
+        }
+        @media (max-width:530px){
+            .container .card {
+            width: 100%;
+            font-size: 4.5vmin;
+        }
+        .container .fall-card{
+            width:100%;
+        }
         }
 
         .img2 {
@@ -89,9 +125,7 @@
             font-size: 25px;
             
         }
-        .container .fall-card{
-            width: calc((100% / 5) - 20px);
-        }
+       
     </style>
 </head>
 
@@ -157,9 +191,10 @@
                 .then(function (data) {
                     // console.log(data);
                     // console.log(data.records.location[0].locationName);
-                    container.innerHTML =''
+                    container.innerHTML ='';
                     let map = data.records.location[0].locationName;
                     console.log(map);
+                    console.log(data);
                     
                     for (let i = 0; i <area_number.length ; i++) {
                         if(data.records.location[area_number[i]].weatherElement[0].time[0].parameter.parameterName.includes('晴',3)){
